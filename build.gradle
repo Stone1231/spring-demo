@@ -42,8 +42,8 @@ dependencies {
        	
 		//有問題
 		//'com.github.drtrang:redisson-spring-boot-starter:1.1.0',
-		'org.redisson:redisson:3.6.1',
-		
+		'org.redisson:redisson:3.6.1',		
+		'redis.clients:jedis:2.7.2',
 		//aop
 		'org.springframework:spring-aop:5.0.4.RELEASE',
 		'org.aspectj:aspectjrt:1.8.7',

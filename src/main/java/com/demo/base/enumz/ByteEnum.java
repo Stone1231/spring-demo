@@ -1,9 +1,10 @@
-package com.demo.enumz;
+package com.demo.base.enumz;
 
 /**
  * 列舉成員命名，請使用英文大寫形式
  */
-public interface StringEnum {
+public interface ByteEnum
+{
 	/**
 	 * 列舉名稱,因會宣告成enum,此name()為原enum的方法
 	 *
@@ -13,5 +14,5 @@ public interface StringEnum {
 	 */
 	String name();
 
-	String getValue();
+	byte getValue();
 }

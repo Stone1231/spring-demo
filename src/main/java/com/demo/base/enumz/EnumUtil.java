@@ -1,4 +1,4 @@
-package com.demo.enumz;
+package com.demo.base.enumz;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;

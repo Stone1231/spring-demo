@@ -2,7 +2,7 @@ package com.demo.utils;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.demo.enumz.StringEnum;
+import com.demo.base.enumz.StringEnum;
 
 /**
  * 檔案類型
