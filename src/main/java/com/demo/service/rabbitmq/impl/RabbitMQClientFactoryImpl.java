@@ -1,4 +1,4 @@
-package com.demo.service.impl;
+package com.demo.service.rabbitmq.impl;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.demo.service.MQProduceClient;
-import com.demo.service.MQProduceClientFactory;
-import com.demo.service.RabbitMQClient;
+import com.demo.service.rabbitmq.MQProduceClient;
+import com.demo.service.rabbitmq.MQProduceClientFactory;
+import com.demo.service.rabbitmq.RabbitMQClient;
 import com.demo.utils.StringUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

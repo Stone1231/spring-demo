@@ -1,4 +1,4 @@
-package com.demo.service.impl;
+package com.demo.service.mqtt.impl;
 
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.demo.model.MqttRequest;
 import com.demo.model.MqttResponse;
-import com.demo.service.MqttPubService;
+import com.demo.service.mqtt.MqttPubService;
 import com.demo.queue.AbstractListenQueue;
 import com.demo.queue.ListenQueue;
 import com.demo.queue.ListenQueueGroup;

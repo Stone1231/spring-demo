@@ -1,9 +1,9 @@
-package com.demo.service.impl;
+package com.demo.service.rabbitmq.impl;
 
 import java.io.Closeable;
 import java.io.IOException;
 
-import com.demo.service.RabbitMQClient;
+import com.demo.service.rabbitmq.RabbitMQClient;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 

@@ -13,7 +13,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import com.demo.model.MqttRequest;
 
-import com.demo.service.MqttPubService;
+import com.demo.service.mqtt.MqttPubService;
 import com.demo.utils.DateUtil;
 import com.demo.utils.JsonUtil;
 import com.demo.model.Message;
@@ -21,7 +21,7 @@ import com.demo.model.Message;
 @Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MqttPubServiceImplTest {
+public class MqttTest {
 
 	@Rule
 	public BenchmarkRule benchmarkRule = new BenchmarkRule();

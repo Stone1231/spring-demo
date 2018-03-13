@@ -15,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import com.demo.DemoApplication;
-import com.demo.service.RestService;
 import com.demo.utils.DateUtil;
 
 @RunWith(SpringRunner.class)

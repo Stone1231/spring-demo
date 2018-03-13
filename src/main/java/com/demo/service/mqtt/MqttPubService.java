@@ -1,4 +1,4 @@
-package com.demo.service;
+package com.demo.service.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 
