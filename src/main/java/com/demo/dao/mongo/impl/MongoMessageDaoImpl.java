@@ -28,7 +28,7 @@ public class MongoMessageDaoImpl extends MongodbBaseDaoImpl {
 	public MongoMessageDaoImpl() {
 	}
 	
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		
 		if(!enable){

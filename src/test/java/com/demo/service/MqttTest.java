@@ -18,7 +18,7 @@ import com.demo.utils.DateUtil;
 import com.demo.utils.JsonUtil;
 import com.demo.model.Message;
 
-@Ignore
+//@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MqttTest {
@@ -38,14 +38,12 @@ public class MqttTest {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void publishMsg() throws Exception {
 		Message msg = new Message();
-		msg.setType("chat");
-		msg.setCategory("plain text");
+		msg.setType("single");
 
 		String topic = "chat/test";
 		msg.setSender("ab2e120e86214f2d890425d441ce4869");
 		msg.setReceiver("888bcd8203c8491e9437871215e5744d");
 
-		msg.setChatID(DateUtil.getUTCTimeInOpenFireFormat());
 		msg.setLogDate(DateUtil.getUTCTime());
 		msg.setBody("Hello~");
 
@@ -62,9 +60,8 @@ public class MqttTest {
 	public void publishMsgs() throws InterruptedException {
 		// publishQueue();
 		Message msg = new Message();
-		msg.setType("chat");
-		msg.setCategory("plain text");
-		// msg.setBody("see you");
+		msg.setType("multi");
+		msg.setBody("see you");
 
 		Integer i = 0;
 
@@ -74,7 +71,6 @@ public class MqttTest {
 		msg.setReceiver("888bcd8203c8491e9437871215e5744d");
 
 		while (i < 20000) {
-			msg.setChatID(i.toString());
 			msg.setLogDate(DateUtil.getUTCTime());
 			msg.setBody("Hello~" + i++);
 			// i++;

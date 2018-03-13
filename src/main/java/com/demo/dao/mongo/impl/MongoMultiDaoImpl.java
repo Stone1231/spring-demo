@@ -28,7 +28,7 @@ public class MongoMultiDaoImpl extends MongodbBaseDaoImpl {
 	public MongoMultiDaoImpl() {
 	}
 	
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		
 		if(!enable){

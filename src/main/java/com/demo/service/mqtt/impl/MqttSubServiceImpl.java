@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.demo.utils.JsonUtil;
+import com.demo.dao.mongo.MessageMongo;
 import com.demo.model.Message;
 import com.demo.service.mqtt.MqttPubService;
 import com.demo.service.mqtt.MqttSubService;
@@ -29,6 +30,9 @@ public class MqttSubServiceImpl implements MqttSubService {
 
 	@Autowired
 	private MqttPubService pubService;
+	
+	@Autowired
+	private MessageMongo messageMongo;
 	
 	@Value("${mqtt.threads}")
 	private int threadCount;
@@ -102,8 +106,8 @@ public class MqttSubServiceImpl implements MqttSubService {
 		switch (msg.getType()) {
 		case "chat":
 			try {
-				//mongoMqttConversationDao.save(msg);
 				LOGGER.info(message);
+				messageMongo.save(msg);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
