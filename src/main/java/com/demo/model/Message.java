@@ -6,11 +6,12 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.test.annotation.IfProfileValue;
 
-@Document(collection="msgs")   
-@CompoundIndexes({//複合索引查詢將大大提高速度
-    @CompoundIndex(name = "com_idx", def = "{'type': 1, 'sender': -1}")//排序 1為正序，-1為倒序
-})
+//@Document(collection="msgs")   
+//@CompoundIndexes({//複合索引查詢將大大提高速度
+//    @CompoundIndex(name = "com_idx", def = "{'type': 1, 'sender': -1}")//排序 1為正序，-1為倒序
+//})
 public class Message {
 	
 	private String msgId;	
