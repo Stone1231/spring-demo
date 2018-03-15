@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
 import com.mongodb.BasicDBObject;
@@ -22,15 +23,21 @@ import com.demo.utils.StringUtil;
 public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBaseDao {
 
 	private static final Logger LOGGER = LogManager.getLogger(MongodbBaseDaoImpl.class);
-
+	
+	@Value("${mongo.enable}") 
+	boolean enable;
 	
 	private String tableNameString = null;
 	private MongodbCreateIndexListener createTablelistener = null;
 	private DBCollection dbCollectionTable = null;
 	
-	
+	@Override
 	public void init(String connentString, String databaseName,
 			String tableName, MongodbCreateIndexListener listener) throws Exception{
+		
+		if(!enable){
+			return;
+		}
 		
 		try {
 			super.openConnect(connentString, databaseName);
@@ -106,6 +113,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public DBCollection getTable() throws Exception{
 		if (dbCollectionTable ==null)
 			return getTable(getTableName());
@@ -152,6 +160,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @param listeners
 	 * @throws Exception
 	 */
+	@Override
 	public void alterTable(List<MongodbCreateIndexListener> listeners) throws Exception{
 		
 		try {
@@ -189,6 +198,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public <T> WriteResult insert (T item) throws Exception{
 		
 		try {
@@ -209,6 +219,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public <T> WriteResult insert (List<T> list) throws Exception{
 				
 		try {
@@ -245,6 +256,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public <T> WriteResult update (String collKeys,T item) throws Exception{
 		
 		try {
@@ -271,6 +283,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public <T> WriteResult update (String collKeys,List<T> list) throws Exception{
 		
 		try {
@@ -317,6 +330,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public <T> WriteResult save (T item) throws Exception{
 		
 		try {
@@ -330,6 +344,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 		}
 	}
 	
+	@Override
 	public <T> WriteResult save (String tableName, T item) throws Exception {		
 		try {
 			String json = StringUtil.writeJSON(item);
@@ -342,6 +357,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 		}
 	}
 	
+	@Override
 	public <T> WriteResult save (List<T> list) throws Exception{
 		
 		try {
@@ -375,6 +391,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	public <T> WriteResult remove (T item) throws Exception{
 		
 		try {
@@ -392,6 +409,7 @@ public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBas
 		return getTable().remove(dbObjects);		
 	}
 	
+	@Override
 	public <T> List<T> transFormList(DBCursor dbCursor, Class<T> clazz) {
 	
 		LOGGER.info(String.format("Query(%s) :%s %s", dbCursor.count(), clazz.getName(), "\n"));

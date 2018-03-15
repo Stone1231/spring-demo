@@ -1,27 +1,19 @@
 package com.demo.model;
 
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.test.annotation.IfProfileValue;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-//@Document(collection="msgs")   
-//@CompoundIndexes({//複合索引查詢將大大提高速度
-//    @CompoundIndex(name = "com_idx", def = "{'type': 1, 'sender': -1}")//排序 1為正序，-1為倒序
-//})
-public class Message {
-	
-	private String msgId;	
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Message {	
+	private String msgId;
 	private String type;
 	private String sender;
-	@Transient //將不會被錄入到數據庫中。只作為普通的javaBean屬性
 	private String receiver;
-	@Indexed
 	private String body;
-	@Field("log")
+	@JsonProperty("log")
 	private Long logDate;
 	public String getMsgId() {
 		return msgId;
