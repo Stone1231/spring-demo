@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 
@@ -17,12 +17,13 @@ import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 import com.demo.dao.mongo.base.MongodbBaseDao;
 import com.demo.dao.mongo.base.MongodbCreateIndexListener;
+import com.demo.service.kafka.base.impl.KafkaBaseServiceImpl;
 import com.demo.utils.StringUtil;
 
 
 public class MongodbBaseDaoImpl extends MongodbAdapterImpl implements MongodbBaseDao {
 
-	private static final Logger LOGGER = LogManager.getLogger(MongodbBaseDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MongodbBaseDaoImpl.class);
 	
 	@Value("${mongo.enable}") 
 	boolean enable;

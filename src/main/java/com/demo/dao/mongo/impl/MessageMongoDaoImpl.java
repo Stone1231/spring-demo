@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import com.demo.dao.mongo.base.MongodbCreateIndexListener;
 @Repository
 public class MessageMongoDaoImpl extends MongodbBaseDaoImpl implements MessageMongoDao {
 
-	private static final Logger logger = LogManager.getLogger(MessageMongoDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageMongoDaoImpl.class);
 	
 	@Autowired
 	MongoConfig mongoConfig;
@@ -59,7 +59,7 @@ public class MessageMongoDaoImpl extends MongodbBaseDaoImpl implements MessageMo
 						
 					});
 		} catch (Exception e) {
-			logger.error("init fail!");
+			LOGGER.error("init fail!");
 		}
 	}
 	
