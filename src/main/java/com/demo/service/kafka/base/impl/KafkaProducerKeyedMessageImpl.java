@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import org.apache.http.annotation.ThreadSafe;
+//import org.apache.http.annotation.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -18,7 +18,7 @@ import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 import kafka.serializer.StringEncoder;
 
-@ThreadSafe
+//@ThreadSafe
 public class KafkaProducerKeyedMessageImpl implements KafkaProducerKeyedMessage{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerKeyedMessageImpl.class);

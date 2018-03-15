@@ -72,15 +72,23 @@ dependencies {
 		'org.apache.commons:commons-text:1.2',
 		//mqtt
 		'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0',
-		// kafka
-		'org.springframework.kafka:spring-kafka',//應該不需要
-		//'org.apache.kafka:kafka_2.11:1.0.1',
-		'org.apache.kafka:kafka_2.11:0.8.2.2',
-		'org.apache.httpcomponents:httpcore:4.3.2',
-		
+
 		//commons-configuration
 		'commons-configuration:commons-configuration:1.10'
 	)
+
 	
+	// kafka	
+	//compile('org.springframework.kafka:spring-kafka')//應該不需要
+	compile('org.apache.kafka:kafka_2.11:0.8.2.2')
+		   //'org.apache.kafka:kafka_2.11:1.0.1',
+	//compile('org.apache.httpcomponents:httpcore:4.3.2')
+	/*
+	compile('org.apache.httpcomponents:httpcore:4.3.2'){
+		//exclude group: 'org.slf4j', module: 'slf4j-log4j12'	
+		exclude group: 'ch.qos.logback', module: 'logback-classic'
+	}
+	*/
+
 
 }
