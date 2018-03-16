@@ -29,21 +29,23 @@ public class RestServiceImplTest {
 		
 		assertTrue(false);
 		
-//		String response = service.sendPostRequestForObj("url", new HttpHeaders(),
-//				new Object(), String.class);
+		String url ="http://localhost/someapi";
 		
-//		try {
-//			service.sendRequest("url", HttpMethod.POST, new HttpHeaders(), new Object());
-//		} catch (HttpClientErrorException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (HttpServerErrorException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		String response = service.sendPostRequestForObj(url, new HttpHeaders(),
+				new Object(), String.class);
+		
+		try {
+			service.sendRequest("url", HttpMethod.POST, new HttpHeaders(), new Object());
+		} catch (HttpClientErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (HttpServerErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

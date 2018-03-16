@@ -5,7 +5,7 @@ import org.springframework.http.HttpHeaders;
 import com.demo.model.Feeback;
 import com.demo.model.WebServiceQueue;
 
-public interface ShareHttpSendRequestService {
+public interface HttpSendRequestService {
 
 	/**
 	 * Real Time call Service

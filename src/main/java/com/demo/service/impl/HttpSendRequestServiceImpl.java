@@ -14,19 +14,19 @@ import com.demo.model.Feeback;
 import com.demo.model.Feeback.Status;
 import com.demo.model.WebServiceQueue;
 import com.demo.service.RestService;
-import com.demo.service.ShareHttpSendRequestService;
+import com.demo.service.HttpSendRequestService;
 import com.demo.utils.StringUtil;
 
 @Service
-public class ShareHttpSendRequestServiceImpl implements ShareHttpSendRequestService {
+public class HttpSendRequestServiceImpl implements HttpSendRequestService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ShareHttpSendRequestServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HttpSendRequestServiceImpl.class);
 	
 	@Autowired
 	private RestService restService;
 	
 
-	public ShareHttpSendRequestServiceImpl(){
+	public HttpSendRequestServiceImpl(){
 		
 	}	
 	
