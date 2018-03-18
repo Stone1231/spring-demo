@@ -29,10 +29,12 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	
-	//mysql
+	//mysql or h2
 	// JPA Data (We are going to use Repositories, Entities, Hibernate, etc...)
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	runtime('mysql:mysql-connector-java')
+	//runtime('mysql:mysql-connector-java')
+	testCompile('com.h2database:h2')
+	
 	
 	compile('org.springframework.boot:spring-boot-starter-cache')
 	compile('org.springframework.boot:spring-boot-starter-data-redis')
