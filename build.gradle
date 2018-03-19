@@ -32,8 +32,10 @@ dependencies {
 	//mysql or h2
 	// JPA Data (We are going to use Repositories, Entities, Hibernate, etc...)
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	//runtime('mysql:mysql-connector-java')
-	testCompile('com.h2database:h2')
+    //'com.mchange:c3p0:0.9.2.1',
+	//'org.springframework:spring-jdbc:4.1.4.RELEASE',
+	runtime('mysql:mysql-connector-java')
+	//testCompile('com.h2database:h2')
 	
 	
 	compile('org.springframework.boot:spring-boot-starter-cache')

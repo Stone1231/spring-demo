@@ -1,13 +1,23 @@
 package com.demo.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@Entity
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {	
+	
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
 	private String msgId;
 	private String type;
 	private String sender;
@@ -15,6 +25,12 @@ public class Message {
 	private String body;
 	@JsonProperty("log")
 	private Long logDate;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getMsgId() {
 		return msgId;
 	}

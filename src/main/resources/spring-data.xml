@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- MySQL write data source setting start -->
+	<!-- c3p0 
+	<bean
+		id="writeDataSourceTarget"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property
+			name="driverClass"
+			value="${db.writeDriverClass}" />
+		<property
+			name="jdbcUrl"
+			value="${db.writeJdbcUrl}" />
+		<property
+			name="user"
+			value="${db.writeUser}" />
+		<property
+			name="password"
+			value="${db.writePassword}" />
+		<property
+			name="initialPoolSize"
+			value="5" />
+		<property
+			name="maxPoolSize"
+			value="50" />
+		<property
+			name="minPoolSize"
+			value="5" />
+		<property
+			name="maxIdleTime"
+			value="60" />
+		<property
+			name="maxStatements"
+			value="0" />
+		<property
+			name="checkoutTimeout"
+			value="3000" />
+	</bean>
+	-->
+	
+	<!-- dbcp -->
+	<bean id="writeDataSourceTarget"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${db.writeDriverClass}</value>
+		</property>
+		<property name="url">
+			<value>${db.writeJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.writeUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.writePassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>5</value>
+		</property>
+		<property name="maxActive">
+			<value>50</value>
+		</property>
+		<property name="maxIdle">
+			<value>50</value>
+		</property>
+		<property name="minIdle">
+			<value>5</value>
+		</property>
+		<property name="maxWait">
+			<value>10000</value>
+		</property>
+		<property name="validationQuery">
+			<value>select 1</value>
+		</property>
+		<property name="removeAbandoned">
+			<value>true</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>60</value>
+		</property>
+		<property name="logAbandoned">
+			<value>true</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>60000</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>60000</value>
+		</property>
+	</bean>
+
+	<bean id="writeDataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref bean="writeDataSourceTarget" />
+		</property>
+	</bean>
+
+	<!-- for @Transactional annotation -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property
+			name="dataSource"
+			ref="writeDataSource" />
+	</bean>
+	<tx:annotation-driven
+		proxy-target-class="true"
+		transaction-manager="transactionManager" />
+
+	<bean id="writeJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="writeDataSource" />
+	</bean>
+	<!-- MySQL write data source setting end -->
+	
+	<!-- MySQL read data source setting start -->
+	<!-- c3p0 
+	<bean
+		id="readDataSourceTarget"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property
+			name="driverClass"
+			value="${db.readDriverClass}" />
+		<property
+			name="jdbcUrl"
+			value="${db.readJdbcUrl}" />
+		<property
+			name="user"
+			value="${db.readUser}" />
+		<property
+			name="password"
+			value="${db.readPassword}" />
+		<property
+			name="initialPoolSize"
+			value="5" />
+		<property
+			name="maxPoolSize"
+			value="50" />
+		<property
+			name="minPoolSize"
+			value="5" />
+		<property
+			name="maxIdleTime"
+			value="60" />
+		<property
+			name="maxStatements"
+			value="0" />
+		<property
+			name="checkoutTimeout"
+			value="3000" />
+	</bean>
+	-->
+
+	<!-- dbcp -->
+	<bean id="readDataSourceTarget"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${db.readDriverClass}</value>
+		</property>
+		<property name="url">
+			<value>${db.readJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.readUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.readPassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>5</value>
+		</property>
+		<property name="maxActive">
+			<value>50</value>
+		</property>
+		<property name="maxIdle">
+			<value>50</value>
+		</property>
+		<property name="minIdle">
+			<value>5</value>
+		</property>
+		<property name="maxWait">
+			<value>10000</value>
+		</property>
+		<property name="validationQuery">
+			<value>select 1</value>
+		</property>
+		<property name="removeAbandoned">
+			<value>true</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>60</value>
+		</property>
+		<property name="logAbandoned">
+			<value>true</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>60000</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>60000</value>
+		</property>
+	</bean>
+
+	<bean id="readDataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref bean="readDataSourceTarget" />
+		</property>
+	</bean>
+
+	<bean id="readJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="readDataSource" />
+	</bean>
+	<!-- MySQL read data source setting end -->
+	
+	<!--<bean id="distributedTx"
+
+	class="org.springframework.transaction.jta.JtaTransactionManager">
+
+	<property name="transactionManager" ref="distributedUserTransactionManager" />
+
+	<property name="userTransaction" ref="distributedUserTransactionImp" />
+
+	<property name="allowCustomIsolationLevels" value="true" />
+
+</bean>
+
+	<tx:annotation-driven transaction-manager="distributedTx" />
+
+	-->
+
+</beans>
