@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- abstract read only datasource-->
+	<bean
+		id="abstractReadOnlyDataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close"
+		abstract="true">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property
+			name="connectionProperties"
+			value="useUnicode=yes;characterEncoding=UTF-8;useSSL=false;loadBalanceBlacklistTimeout=5000;loadBalanceConnectionGroup=sso_group;loadBalanceEnableJMX=true;autoReconnect=true;autoReconnectForPools=true" />
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>10</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+		<property name="maxWaitMillis">
+			<value>60000</value>
+		</property>
+		<!--  
+		<property name="validationQuery">
+			<value>SELECT 1</value>
+		</property>
+		-->
+		<property name="removeAbandonedOnBorrow">
+			<value>true</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>60</value>
+		</property>
+		<property name="logAbandoned">
+			<value>true</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>60000</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>60000</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>false</value>
+		</property>
+		<property name="testOnReturn">
+			<value>false</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>
+	</bean>
+	
+	<!-- sharding 1 -->
+	<bean
+		id="readOnlyDistributedShardingDataSourceTarget"
+		parent="abstractReadOnlyDataSource">
+		<property name="url">
+			<value>${db.1.readJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.1.readUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.1.readPassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>280</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+	</bean>
+	
+	<!-- sharding 2 -->
+	<bean
+		id="readOnlyDistributedShardingDataSource2Target"
+		parent="abstractReadOnlyDataSource">
+		<property name="url">
+			<value>${db.2.readJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.2.readUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.2.readPassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>280</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+	</bean>
+
+	<bean
+		id="readOnlyDistributedShardingDataSourceArrayFactoryBeanTarget"
+		class="com.demo.dao.mysql.base.BasicDataSourceArrayFactoryBean">
+		<property name="basicDataSourceArray">
+			<array>
+				<ref bean="readOnlyDistributedShardingDataSourceTarget" />
+				<ref bean="readOnlyDistributedShardingDataSource2Target" />
+			</array>
+		</property>
+	</bean>
+
+	<bean
+		id="readOnlyDistributedShardingDataSourceArrayFactoryBean"
+		class="com.demo.dao.mysql.base.LazyConnectionDataSourceProxyArrayFactoryBean">
+		<property name="targetDataSources">
+			<ref bean="readOnlyDistributedShardingDataSourceArrayFactoryBeanTarget" />
+		</property>
+	</bean>
+
+	<bean
+		id="readOnlyDistributedShardingJdbcTemplateArrayFactoryBean"
+		class="com.demo.dao.mysql.base.NamedParameterJdbcTemplateArrayFactoryBean">
+		<constructor-arg
+			ref="readOnlyDistributedShardingDataSourceArrayFactoryBean" />
+	</bean>
+</beans>

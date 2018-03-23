@@ -1,21 +1,19 @@
 package com.demo;
 
-//import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import com.demo.base.BaseTest;
 import com.demo.model.TestModel;
 import com.demo.service.AnnoTestService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AnnoTest {
+public class AnnoTest extends BaseTest {
 
 	@Autowired
 	private AnnoTestService service;

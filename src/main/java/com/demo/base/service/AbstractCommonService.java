@@ -13,6 +13,8 @@ import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +23,7 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 
 import com.demo.utils.ConfigUtil;
+import com.demo.utils.StringUtil;
 import com.demo.utils.service.ThreadService;
 
 /**
@@ -28,7 +31,10 @@ import com.demo.utils.service.ThreadService;
  */
 public abstract class AbstractCommonService implements CommonService, ApplicationContextAware, BeanFactoryAware,
 		BeanNameAware, ResourceLoaderAware, InitializingBean, DisposableBean {
-
+	
+	@Value("${system.env}")
+	private String environment;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonService.class);
 
 	protected ApplicationContext applicationContext;
@@ -50,7 +56,7 @@ public abstract class AbstractCommonService implements CommonService, Applicatio
 	 * 線程服務
 	 */
 	@Autowired
-	//@Qualifier("threadService")
+	@Qualifier("threadService")
 	protected ThreadService threadService;
 
 	public AbstractCommonService() {
@@ -111,7 +117,7 @@ public abstract class AbstractCommonService implements CommonService, Applicatio
 	 * 初始化
 	 */
 	protected void init() {
-		if (ConfigUtil.isDebug()) {
+		if (isDebug()) {
 			int mod = getClass().getModifiers();
 			if (!Modifier.isAbstract(mod)) {
 				LOGGER.info("Initialization of " + getClass().getSimpleName());
@@ -144,4 +150,10 @@ public abstract class AbstractCommonService implements CommonService, Applicatio
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
 	}
 
+	private boolean isDebug() {
+		if (StringUtil.isNullOrEmpty(environment))
+			return false;
+
+		return environment.matches("(?i)pre[-]?dev|(?i)dev|(?i)pre[-]?prd");
+	}
 }

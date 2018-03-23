@@ -1,89 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans
-	xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- MySQL write data source setting start -->
-	<!-- c3p0 
-	<bean
-		id="writeDataSourceTarget"
-		class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property
-			name="driverClass"
-			value="${db.writeDriverClass}" />
-		<property
-			name="jdbcUrl"
-			value="${db.writeJdbcUrl}" />
-		<property
-			name="user"
-			value="${db.writeUser}" />
-		<property
-			name="password"
-			value="${db.writePassword}" />
-		<property
-			name="initialPoolSize"
-			value="5" />
-		<property
-			name="maxPoolSize"
-			value="50" />
-		<property
-			name="minPoolSize"
-			value="5" />
-		<property
-			name="maxIdleTime"
-			value="60" />
-		<property
-			name="maxStatements"
-			value="0" />
-		<property
-			name="checkoutTimeout"
-			value="3000" />
-	</bean>
-	-->
-	
-	<!-- dbcp -->
-	<bean id="writeDataSourceTarget"
-		class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
+<!--	
+	<context:component-scan base-package="com.demo" />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+-->
+
+	<!-- abstract datasource-->
+	<bean id="abstractDataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close"
+		abstract="true">
 		<property name="driverClassName">
-			<value>${db.writeDriverClass}</value>
+			<value>com.mysql.jdbc.Driver</value>
 		</property>
-		<property name="url">
-			<value>${db.writeJdbcUrl}</value>
-		</property>
-		<property name="username">
-			<value>${db.writeUser}</value>
-		</property>
-		<property name="password">
-			<value>${db.writePassword}</value>
-		</property>
+		<property
+			name="connectionProperties"
+			value="useUnicode=yes;characterEncoding=UTF-8;pinGlobalTxToPhysicalConnection=true;autoReconnect=true;useSSL=false" />
 		<property name="initialSize">
-			<value>5</value>
+			<value>1</value>
 		</property>
-		<property name="maxActive">
-			<value>50</value>
-		</property>
-		<property name="maxIdle">
-			<value>50</value>
+		<property name="maxTotal">
+			<value>10</value>
 		</property>
 		<property name="minIdle">
-			<value>5</value>
+			<value>2</value>
 		</property>
-		<property name="maxWait">
-			<value>10000</value>
+		<property name="maxIdle">
+			<value>3</value>
 		</property>
+		<property name="maxWaitMillis">
+			<value>60000</value>
+		</property>
+		<!--  
 		<property name="validationQuery">
-			<value>select 1</value>
+			<value>SELECT 1</value>
 		</property>
-		<property name="removeAbandoned">
+		-->
+		<property name="removeAbandonedOnBorrow">
 			<value>true</value>
 		</property>
 		<property name="removeAbandonedTimeout">
@@ -98,149 +63,201 @@
 		<property name="minEvictableIdleTimeMillis">
 			<value>60000</value>
 		</property>
+		<property name="testOnBorrow">
+			<value>false</value>
+		</property>
+		<property name="testOnReturn">
+			<value>false</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>
 	</bean>
-
-	<bean id="writeDataSource"
-		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
-		<property name="targetDataSource">
-			<ref bean="writeDataSourceTarget" />
+		
+	<!-- sharding 1 -->	
+	<bean id="shardingDataSourceTarget"
+		parent="abstractDataSource">
+		<property name="driverClassName">
+			<value>${db.1.writeDriverClass}</value>
+		</property>
+		<property name="url">
+			<value>${db.1.writeJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.1.writeUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.1.writePassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>350</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
 		</property>
 	</bean>
 
-	<!-- for @Transactional annotation -->
-	<bean id="transactionManager"
+	<!-- sharding 2 -->
+	<bean id="shardingDataSource2Target"
+		parent="abstractDataSource">
+		<property name="driverClassName">
+			<value>${db.2.writeDriverClass}</value>
+		</property>
+		<property name="url">
+			<value>${db.2.writeJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.2.writeUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.2.writePassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>350</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+	</bean>
+
+	<bean id="shardingDataSourceArrayFactoryBeanTarget"
+		class="com.demo.dao.mysql.base.BasicDataSourceArrayFactoryBean">
+		<property name="basicDataSourceArray">
+			<array>
+				<ref bean="shardingDataSourceTarget" />
+				<ref bean="shardingDataSource2Target" />
+			</array>
+		</property>
+	</bean>
+
+	<bean id="shardingDataSourceArrayFactoryBean"
+		class="com.demo.dao.mysql.base.LazyConnectionDataSourceProxyArrayFactoryBean">
+		<property name="targetDataSources">
+			<ref bean="shardingDataSourceArrayFactoryBeanTarget" />
+		</property>
+	</bean>
+
+	<bean id="shardingJdbcTemplateArrayFactoryBean"
+		class="com.demo.dao.mysql.base.NamedParameterJdbcTemplateArrayFactoryBean">
+		<constructor-arg ref="shardingDataSourceArrayFactoryBean" />
+	</bean>
+
+
+<!-- global -->
+<!--  
+	<bean
+		id="globalDataSourceTarget"
+		parent="abstractDataSource">
+		<property name="url">
+			<value>${db.global.writeJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.global.writeUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.global.writePassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>350</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+	</bean>
+
+	<bean
+		id="globalDataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref bean="globalDataSourceTarget" />
+		</property>
+	</bean>
+
+	<bean
+		id="globalTx"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property
 			name="dataSource"
-			ref="writeDataSource" />
+			ref="globalDataSource" />
 	</bean>
-	<tx:annotation-driven
-		proxy-target-class="true"
-		transaction-manager="transactionManager" />
 
-	<bean id="writeJdbcTemplate"
-		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-		<constructor-arg ref="writeDataSource" />
-	</bean>
-	<!-- MySQL write data source setting end -->
-	
-	<!-- MySQL read data source setting start -->
-	<!-- c3p0 
+	<tx:annotation-driven transaction-manager="globalTx" />
+
 	<bean
-		id="readDataSourceTarget"
-		class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property
-			name="driverClass"
-			value="${db.readDriverClass}" />
-		<property
-			name="jdbcUrl"
-			value="${db.readJdbcUrl}" />
-		<property
-			name="user"
-			value="${db.readUser}" />
-		<property
-			name="password"
-			value="${db.readPassword}" />
-		<property
-			name="initialPoolSize"
-			value="5" />
-		<property
-			name="maxPoolSize"
-			value="50" />
-		<property
-			name="minPoolSize"
-			value="5" />
-		<property
-			name="maxIdleTime"
-			value="60" />
-		<property
-			name="maxStatements"
-			value="0" />
-		<property
-			name="checkoutTimeout"
-			value="3000" />
+		id="globalJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="globalDataSource" />
 	</bean>
-	-->
+-->
 
-	<!-- dbcp -->
-	<bean id="readDataSourceTarget"
-		class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName">
-			<value>${db.readDriverClass}</value>
-		</property>
+<!-- ticket -->
+<!-- 
+	<bean
+		id="ticketDataSourceTarget"
+		parent="abstractDataSource">
 		<property name="url">
-			<value>${db.readJdbcUrl}</value>
+			<value>${db.ticket.writeJdbcUrl}</value>
 		</property>
 		<property name="username">
-			<value>${db.readUser}</value>
+			<value>${db.ticket.writeUser}</value>
 		</property>
 		<property name="password">
-			<value>${db.readPassword}</value>
+			<value>${db.ticket.writePassword}</value>
 		</property>
 		<property name="initialSize">
-			<value>5</value>
+			<value>1</value>
 		</property>
-		<property name="maxActive">
-			<value>50</value>
-		</property>
-		<property name="maxIdle">
-			<value>50</value>
+		<property name="maxTotal">
+			<value>350</value>
 		</property>
 		<property name="minIdle">
-			<value>5</value>
+			<value>2</value>
 		</property>
-		<property name="maxWait">
-			<value>10000</value>
-		</property>
-		<property name="validationQuery">
-			<value>select 1</value>
-		</property>
-		<property name="removeAbandoned">
-			<value>true</value>
-		</property>
-		<property name="removeAbandonedTimeout">
-			<value>60</value>
-		</property>
-		<property name="logAbandoned">
-			<value>true</value>
-		</property>
-		<property name="timeBetweenEvictionRunsMillis">
-			<value>60000</value>
-		</property>
-		<property name="minEvictableIdleTimeMillis">
-			<value>60000</value>
+		<property name="maxIdle">
+			<value>3</value>
 		</property>
 	</bean>
 
-	<bean id="readDataSource"
+	<bean
+		id="ticketDataSource"
 		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
 		<property name="targetDataSource">
-			<ref bean="readDataSourceTarget" />
+			<ref bean="ticketDataSourceTarget" />
 		</property>
 	</bean>
 
-	<bean id="readJdbcTemplate"
-		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-		<constructor-arg ref="readDataSource" />
+	<bean
+		id="ticketTx"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property
+			name="dataSource"
+			ref="ticketDataSource" />
 	</bean>
-	<!-- MySQL read data source setting end -->
-	
-	<!--<bean id="distributedTx"
 
-	class="org.springframework.transaction.jta.JtaTransactionManager">
+	<tx:annotation-driven transaction-manager="ticketTx" />
 
-	<property name="transactionManager" ref="distributedUserTransactionManager" />
-
-	<property name="userTransaction" ref="distributedUserTransactionImp" />
-
-	<property name="allowCustomIsolationLevels" value="true" />
-
-</bean>
-
-	<tx:annotation-driven transaction-manager="distributedTx" />
-
-	-->
-
+	<bean
+		id="ticketJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="ticketDataSource" />
+	</bean>
+-->
 </beans>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean
+		id="testModel"
+		class="com.demo.model.TestModel">
+		<property name="userName">
+			<value>${testmodel.username}</value>
+		</property>
+	</bean>
+	
+	<bean
+		id="testModel2"
+		class="com.demo.model.TestModel">
+		<property name="userName">
+			<value>rita</value>
+		</property>
+	</bean>
+
+	<bean id="abstractTestModel"
+		class="com.demo.model.TestModel"
+		abstract="true">
+		<property name="userName">
+			<value>abstractName</value>
+		</property>		
+		<property name="nickName">
+			<value>abstractNick</value>
+		</property>			
+	</bean>
+
+	<bean id="child1"
+		parent="abstractTestModel">
+		<property name="userName">
+			<value>${testmodel.username}</value>
+		</property>
+	</bean>
+
+	<bean id="child2"
+		parent="abstractTestModel">
+		<property name="userName">
+			<value>C</value>
+		</property>
+	</bean>
+
+	<bean id="childs"
+		class="com.demo.model.TestList">
+		<property name="data">
+			<array>
+				<ref bean="child1" />
+				<ref bean="child2" />
+			</array>
+		</property>
+	</bean>
+
+	<bean id="abstractDataSource"
+		class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close"
+		abstract="true">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property
+			name="connectionProperties"
+			value="useUnicode=yes;characterEncoding=UTF-8;pinGlobalTxToPhysicalConnection=true;autoReconnect=true;useSSL=false" />
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>10</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+		<property name="maxWaitMillis">
+			<value>60000</value>
+		</property>
+		<!--  
+		<property name="validationQuery">
+			<value>SELECT 1</value>
+		</property>
+		-->
+		<property name="removeAbandonedOnBorrow">
+			<value>true</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>60</value>
+		</property>
+		<property name="logAbandoned">
+			<value>true</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>60000</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>60000</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>false</value>
+		</property>
+		<property name="testOnReturn">
+			<value>false</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>
+	</bean>
+ 	<bean id="testDataSource1"
+		parent="abstractDataSource">
+		<property name="driverClassName">
+			<value>${db.1.writeDriverClass}</value>
+		</property>
+		<property name="url">
+			<value>${db.1.writeJdbcUrl}</value>
+		</property>
+		<property name="username">
+			<value>${db.1.writeUser}</value>
+		</property>
+		<property name="password">
+			<value>${db.1.writePassword}</value>
+		</property>
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<property name="maxTotal">
+			<value>350</value>
+		</property>
+		<property name="minIdle">
+			<value>2</value>
+		</property>
+		<property name="maxIdle">
+			<value>3</value>
+		</property>
+	</bean>
+
+
+</beans>

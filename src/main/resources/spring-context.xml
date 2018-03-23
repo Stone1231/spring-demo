@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<!--  
+	<context:property-placeholder
+		location="WEB-INF/*.properties, classpath*:com/demo/*/dao/impl/*.sql.properties, classpath*:com/demo/*/dao/mysql/impl/*.sql.properties, classpath*:com/demo/*/dao/mysql_dao/impl/*.sql.properties, classpath*:com/demo/*/dao/message/impl/*.sql.properties" />
+	<context:component-scan base-package="com.demo" />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+-->
+	<context:property-placeholder
+		location="*.properties" />
+
+	<!-- threadService -->
+	
+	<bean
+		id="threadService"
+		class="com.demo.utils.service.impl.ThreadServiceImpl">
+		<property
+			name="maxExecutorSize"
+			value="${threadService.maxExecutorSize}" />
+		<property
+			name="corePoolSize"
+			value="${threadService.corePoolSize}" />
+		<property
+			name="keepAliveSeconds"
+			value="${threadService.keepAliveSeconds}" />
+		<property
+			name="maxPoolSize"
+			value="${threadService.maxPoolSize}" />
+		<property
+			name="queueCapacity"
+			value="${threadService.queueCapacity}" />
+		<property
+			name="waitForTasksToCompleteOnShutdown"
+			value="${threadService.waitForTasksToCompleteOnShutdown}" />
+		<property
+			name="allowCoreThreadTimeOut"
+			value="${threadService.allowCoreThreadTimeOut}" />
+		<property
+			name="daemon"
+			value="${threadService.daemon}" />
+	</bean>
+	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+</beans>
