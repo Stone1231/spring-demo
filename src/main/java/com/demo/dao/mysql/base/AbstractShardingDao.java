@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
-
 import com.demo.base.service.AbstractCommonService;
 import com.demo.utils.AssertUtil;
 
@@ -31,7 +30,6 @@ public class AbstractShardingDao extends AbstractCommonService {
 
 		this.jdbcTemplates = applicationContext.getBean("shardingJdbcTemplateArrayFactoryBean",
 				NamedParameterJdbcTemplate[].class);
-
 	}
 
 	/**

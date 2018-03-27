@@ -1,10 +1,6 @@
 package com.demo.dao;
 
-import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.demo.base.BaseTest;
@@ -36,6 +32,9 @@ public class MysqlTest extends BaseTest {
 		message.setSender("sender");
 		
 		messageMysqlDao.insert(message);
+		
+		message.setBody("body2");
+		messageMysqlDao.insert2(message);
 		
 	}
 	

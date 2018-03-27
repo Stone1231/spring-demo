@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.demo.base.BaseTest;
+import com.demo.dao.mysql.base.BasicDataSourceArrayFactoryBean;
+import com.demo.dao.mysql.base.NamedParameterJdbcTemplateArrayFactoryBean;
 import com.demo.model.TestList;
 import com.demo.model.TestModel;
 
@@ -30,11 +32,12 @@ public class BeanTest extends BaseTest {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
+	@Autowired
+	private TestList constructorChilds;
 	
 	@Test
 	public void testAbstract() {
 
-		
 		TestModel model = applicationContext.getBean("child1",
 				TestModel.class);
 		
@@ -54,11 +57,24 @@ public class BeanTest extends BaseTest {
 		LazyConnectionDataSourceProxy[] dataSources = applicationContext.getBean("shardingDataSourceArrayFactoryBean",
 				LazyConnectionDataSourceProxy[].class);
 		
+		NamedParameterJdbcTemplateArrayFactoryBean[] shardingJdbcTemplateArrayFactoryBean = applicationContext.getBean("shardingJdbcTemplateArrayFactoryBean",
+				NamedParameterJdbcTemplateArrayFactoryBean[].class);
+		
 		TestModel model = applicationContext.getBean("testModel",
 				TestModel.class);
 		
 		System.out.println(model.getUserName());
 	}
+	
+	@Test
+	public void testBasicDataSource() {
+
+		org.apache.commons.dbcp2.BasicDataSource dataSource= applicationContext.getBean("shardingDataSource2Target",
+				org.apache.commons.dbcp2.BasicDataSource.class);
+		
+		
+		System.out.println(dataSource.getUsername());
+	}	
 	
 	@Test
 	public void test() {
@@ -68,6 +84,9 @@ public class BeanTest extends BaseTest {
 		System.out.println(testModel2.getUserName());
 		
 		System.out.println(model.getUserName());
+		
+		System.out.println(constructorChilds.getData().get(0).getUserName());
+		
 	}
 
 }

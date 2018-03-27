@@ -5,11 +5,11 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import com.demo.base.service.AbstractFactoryBean;
 import com.demo.utils.AssertUtil;
 
-public class NamedParameterJdbcTemplateArrayFactoryBean extends AbstractFactoryBean<NamedParameterJdbcTemplate[]> {
+public class NamedParameterJdbcTemplateArrayFactoryBean 
+	extends AbstractFactoryBean<NamedParameterJdbcTemplate[]> {
 
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(NamedParameterJdbcTemplateArrayFactoryBean.class);

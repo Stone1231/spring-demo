@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -22,6 +23,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 	"file:src/main/resources/system.properties",
 	"file:src/main/resources/application.properties"
 })
+//@ContextConfiguration({ //
+//	"file:src/main/resources/spring-context.xml",
+//	"file:src/main/resources/spring-test.xml"})
 //@ImportResource({
 //	"file:src/main/resources/spring-test.xml"}) //無效
 public abstract class BaseTest {

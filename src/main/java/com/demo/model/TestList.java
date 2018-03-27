@@ -1,6 +1,7 @@
 package com.demo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,5 +27,11 @@ public class TestList implements Serializable {
 
 	public void setData(List<TestModel> data) {
 		this.data = data;
+	}
+	
+	public TestList(){}
+	public TestList(TestModel model){
+		data = new ArrayList<TestModel>();
+		data.add(model);
 	}
 }

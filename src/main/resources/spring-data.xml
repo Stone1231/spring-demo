@@ -148,12 +148,16 @@
 			<ref bean="shardingDataSourceArrayFactoryBeanTarget" />
 		</property>
 	</bean>
-
+ 
 	<bean id="shardingJdbcTemplateArrayFactoryBean"
 		class="com.demo.dao.mysql.base.NamedParameterJdbcTemplateArrayFactoryBean">
-		<constructor-arg ref="shardingDataSourceArrayFactoryBean" />
+		<property name="targetDataSources">
+			<ref bean="shardingDataSourceArrayFactoryBean" />
+		</property>
+		<!-- 會error  
+			<constructor-arg ref="shardingDataSourceArrayFactoryBean" />
+		-->
 	</bean>
-
 
 <!-- global -->
 <!--  

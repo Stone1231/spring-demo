@@ -2,15 +2,14 @@ package com.demo.base.service;
 
 import java.io.IOException;
 import java.util.Properties;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-
 import com.demo.base.service.AbstractCommonService;
+
 
 public abstract class AbstractFactoryBean<T> extends AbstractCommonService implements FactoryBean<T> {
 
@@ -82,3 +81,4 @@ public abstract class AbstractFactoryBean<T> extends AbstractCommonService imple
 		}
 	}
 }
+

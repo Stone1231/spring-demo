@@ -169,7 +169,6 @@ public class BasicDataSourceArrayFactoryBean extends AbstractFactoryBean<BasicDa
 	}
 
 	/**
-	 * jdbc:mysql://10.16.211.102:3306/neweggsso_db?useUnicode=yes&
 	 * characterEncoding=UTF-8
 	 * 
 	 * @param url

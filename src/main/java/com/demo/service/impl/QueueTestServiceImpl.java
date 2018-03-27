@@ -16,7 +16,7 @@ import com.demo.service.QueueTestService;
 public class QueueTestServiceImpl implements QueueTestService {
 
 
-	@Value("${qt.threads}")
+	@Value("${queue.threads}")
 	private int threadCount;
 
     private transient ListenQueueGroup<Integer> listenQueueGroup;
