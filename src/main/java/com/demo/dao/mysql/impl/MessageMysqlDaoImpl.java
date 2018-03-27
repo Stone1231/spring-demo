@@ -1,5 +1,11 @@
 package com.demo.dao.mysql.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 import com.demo.dao.mysql.MessageMysqlDao;
@@ -53,22 +59,31 @@ public class MessageMysqlDaoImpl extends AbstractShardingDao implements MessageM
 				.addValue("type", message.getType());
 		//
 		return getJdbcTemplate(2).update(sql.toString(), params);
-	}	
-
-//	@Autowired
-//	private BasicDataSource shardingDataSourceTarget;	
+	}
 	
-//	@Autowired
-//	private BasicDataSource shardingDataSource2Target;
-	
-//	private NamedParameterJdbcTemplate getJdbcTemplate(int dbId) {
-//		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(shardingDataSourceTarget);
-//		
-//		
-//		
-//		
-//		
-//		return jdbcTemplate;
-//	}
+	@Override
+	public List<Message> getbyType(String type) {
 
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * from message")
+				.append(" WHERE type = :type");
+
+		List<Message> result = new ArrayList<>();
+
+		try {
+			
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("type", type);
+			
+			List<Message> list = getJdbcTemplate(1).query(
+					sql.toString(), 
+					params,
+					new BeanPropertyRowMapper<Message>(Message.class));
+			
+			result.addAll(list);
+		} catch (EmptyResultDataAccessException e) {
+		}
+
+		return result;
+	}
 }

@@ -143,7 +143,11 @@
 	<bean
 		id="readOnlyDistributedShardingJdbcTemplateArrayFactoryBean"
 		class="com.demo.dao.mysql.base.NamedParameterJdbcTemplateArrayFactoryBean">
-		<constructor-arg
-			ref="readOnlyDistributedShardingDataSourceArrayFactoryBean" />
+		<property name="targetDataSources">
+			<ref bean="readOnlyDistributedShardingDataSourceArrayFactoryBean" />
+		</property>
+		<!-- 會error  
+			<constructor-arg ref="readOnlyDistributedShardingDataSourceArrayFactoryBean" />
+		-->
 	</bean>
 </beans>

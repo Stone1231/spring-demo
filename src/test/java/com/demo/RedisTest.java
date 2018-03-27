@@ -5,12 +5,15 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Set;
 
+
 import org.aspectj.weaver.NewConstructorTypeMunger;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.demo.base.BaseTest;
 import com.demo.model.Message;
 import com.demo.utils.StringUtil;
 import com.demo.utils.StringUtil3;
@@ -23,14 +26,24 @@ import redis.clients.jedis.Jedis;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RedisTest {
+public class RedisTest extends BaseTest {
+	
+	Jedis jedis;
+	
+	@Before
+	public void init() {
+		jedis = new Jedis("10.16.179.205", 6379);		
+	    String pwd = "backend";
+	    	    
+	    if(!pwd.isEmpty()){
+	    	jedis.auth(pwd);
+	    	jedis.connect();
+	    }
+	    jedis.select(59);
+	}
 	
 	@Test
 	public void testJedisFirst() {
-
-	    Jedis jedis = new Jedis("localhost", 6379);
-	    //jedis.auth("password");
-	    //jedis.connect();
 	    //Boolean isconn = jedis.isConnected();
 	    //System.out.println("Connected to Redis %s",);
 	    
@@ -71,13 +84,7 @@ public class RedisTest {
 		message.setReceiver("receiver");
 		message.setSender("sender");
 
-	    Jedis jedis = new Jedis("localhost", 6379);
-
-	    //jedis.set(key, value)
-	    //jedis.auth("password");
-	    //jedis.connect();
-	    //Boolean isconn = jedis.isConnected();
-	    //System.out.println("Connected to Redis %s",);
+		jedis.flushAll();
 	    
 	    jedis.set("key1", StringUtil.writeJSON(message));
 	    String value = jedis.get("key1");
@@ -132,19 +139,12 @@ public class RedisTest {
 		message.setReceiver("receiver");
 		message.setSender("sender");
 
-	    Jedis jedis = new Jedis("localhost", 6379);
-
-	    //jedis.set(key, value)
-	    //jedis.auth("password");
-	    //jedis.connect();
-	    //Boolean isconn = jedis.isConnected();
-	    //System.out.println("Connected to Redis %s",);
-
 	    String keyString = "key1";
 
 	    byte[] keyByte =  SerializeUtil.kryoWriteClass(keyString);
 	    byte[] valueByte =  SerializeUtil.kryoWriteClass(message);
 	    
+	    jedis.flushAll();
 	    jedis.set(keyByte, valueByte);
 	    
 	    byte[] resultByte =  jedis.get(keyByte);
@@ -165,8 +165,6 @@ public class RedisTest {
 		message.setBody("jedisKryoObject");
 		message.setReceiver("receiver");
 		message.setSender("sender");
-
-	    Jedis jedis = new Jedis("localhost", 6379);
 	    
 	    jedis.flushAll();
 
@@ -267,7 +265,6 @@ public class RedisTest {
 		message.setSender("sender");
 
 	    Jedis jedis = new Jedis("localhost", 6379);
-	    
 	    jedis.flushAll();
 
 	    byte[] dbByte =  SerializeUtil.kryoWriteClass("db1");

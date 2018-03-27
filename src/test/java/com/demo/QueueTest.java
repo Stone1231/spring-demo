@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+import com.demo.base.BaseTest;
 import com.demo.service.QueueTestService;
 
 @RunWith(SpringRunner.class)
@@ -17,7 +18,7 @@ import com.demo.service.QueueTestService;
 // "file:src/main/webapp/WEB-INF/test-spring-context.xml",
 // "file:src/main/webapp/WEB-INF/spring-data.xml" })
 // @TestPropertySource("file:src/main/webapp/WEB-INF/config.properties")
-public class QueueTest {
+public class QueueTest extends BaseTest {
 	
 //	@Rule
 //	public BenchmarkRule benchmarkRule = new BenchmarkRule();	
