@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Aspect
-@Component
+@Component//實例化到spring容器中，相當於配置文件中的<bean id="" class=""/>
 public class ServiceAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceAspect.class);
 

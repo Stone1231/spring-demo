@@ -7,16 +7,14 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean
-		id="testModel"
+	<bean id="testModel"
 		class="com.demo.model.TestModel">
 		<property name="userName">
 			<value>${testmodel.username}</value>
 		</property>
 	</bean>
 	
-	<bean
-		id="testModel2"
+	<bean id="testModel2"
 		class="com.demo.model.TestModel">
 		<property name="userName">
 			<value>rita</value>

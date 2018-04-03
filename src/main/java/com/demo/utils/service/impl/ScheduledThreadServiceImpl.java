@@ -5,19 +5,21 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
 
 import com.demo.utils.service.ScheduledThreadService;
+
 
 /**
  * 執行緒服務
  */
+@Service
 public class ScheduledThreadServiceImpl implements ScheduledThreadService, InitializingBean, DisposableBean {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(ScheduledThreadServiceImpl.class);

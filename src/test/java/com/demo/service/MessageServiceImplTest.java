@@ -14,9 +14,9 @@ public class MessageServiceImplTest extends BaseTest {
 	private  MessageService messageService;
 	
 	@Test
-	public void test(){
+	public void first(){
 		
-		List<Message> messages = messageService.getbyType("mysql-dao");
+		List<Message> messages = messageService.getType("mysql-dao");
 		
 		System.out.println(messages.size());
 	}

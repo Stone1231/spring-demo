@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.demo.aop.ServiceAspect;
 import com.demo.model.TestModel;
+
 
 @RestController
 public class TestController extends AbstractController {

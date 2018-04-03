@@ -11,14 +11,13 @@ import org.redisson.api.NodesGroup;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.demo.cache.AbstractCacheService;
 import com.demo.cache.service.CheckRedisConnectService;
 import com.demo.utils.service.ScheduledThreadService;
 
-
 @Service
-//public class CheckRedissonConnectServiceImpl extends AbstractCacheService implements CheckRedisConnectService {
-public class CheckRedissonConnectServiceImpl implements CheckRedisConnectService {
+public class CheckRedissonConnectServiceImpl extends AbstractCacheService implements CheckRedisConnectService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CheckRedissonConnectServiceImpl.class);
 
@@ -29,39 +28,39 @@ public class CheckRedissonConnectServiceImpl implements CheckRedisConnectService
 
 	private long initialDelay = 1 * 10L;
 
-//	@Autowired
-//	private ScheduledThreadService scheduledThreadService;
+	@Autowired
+	private ScheduledThreadService scheduledThreadService;
 
 	private Map<String, Boolean> connectStates;
 
-//	@Override
-//	protected void init() {
-//		super.init();
-//		//
-//		connectStates = new ConcurrentHashMap<>();
-//
-//		Map<String, RedissonClient> redissonClients = this.applicationContext.getBeansOfType(RedissonClient.class);
-//		
-//		LOGGER.info("Check Redisson Connect initializing.");
-//		//
-//		long delay = initialDelay;
-//		for (Map.Entry<String, RedissonClient> entry : redissonClients.entrySet()) {
-//			String clientName = entry.getKey();
-//			RedissonClient redissonClient = entry.getValue();
-//			
-//			if(redissonClient == null) {
-//				LOGGER.warn("RedissonClient '" + clientName + "' is null.");
-//				continue;
-//			}
-//			
-//			connectStates.put(clientName, false);
-//
-//			scheduledThreadService.scheduleAtFixedRate(new PingRedis(redissonClient, clientName), delay,
-//					pingRedisInterval, TimeUnit.MILLISECONDS);
-//			delay += 10;
-//		}
-//		
-//	}
+	@Override
+	protected void init() {
+		super.init();
+		//
+		connectStates = new ConcurrentHashMap<>();
+
+		Map<String, RedissonClient> redissonClients = this.applicationContext.getBeansOfType(RedissonClient.class);
+		
+		LOGGER.info("Check Redisson Connect initializing.");
+		//
+		long delay = initialDelay;
+		for (Map.Entry<String, RedissonClient> entry : redissonClients.entrySet()) {
+			String clientName = entry.getKey();
+			RedissonClient redissonClient = entry.getValue();
+			
+			if(redissonClient == null) {
+				LOGGER.warn("RedissonClient '" + clientName + "' is null.");
+				continue;
+			}
+			
+			connectStates.put(clientName, false);
+
+			scheduledThreadService.scheduleAtFixedRate(new PingRedis(redissonClient, clientName), delay,
+					pingRedisInterval, TimeUnit.MILLISECONDS);
+			delay += 10;
+		}
+		
+	}
 	
 
 	public boolean getConnectState(String clientName) {

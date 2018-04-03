@@ -62,6 +62,31 @@ public class MessageMysqlDaoImpl extends AbstractShardingDao implements MessageM
 	}
 	
 	@Override
+	public int update(Message message) {
+		// TODO Auto-generated method stub
+		StringBuilder sql = new StringBuilder()//
+				.append("UPDATE message")
+				.append(" SET body = :body")
+				.append(" ,log_date = :log_date")
+				.append(" ,msg_id = :msg_id")
+				.append(" ,receiver = :receiver")
+				.append(" ,sender = :sender")
+				.append(" ,type = :type")
+				.append(" WHERE id = :id");	
+		//
+		MapSqlParameterSource params = new MapSqlParameterSource()
+				.addValue("id", message.getId())
+				.addValue("body", message.getBody())//
+				.addValue("log_date", message.getLogDate())//
+				.addValue("msg_id", message.getMsgId())//
+				.addValue("receiver", message.getReceiver())//
+				.addValue("sender", message.getSender())//
+				.addValue("type", message.getType());
+		//
+		return getJdbcTemplate(1).update(sql.toString(), params);
+	}	
+	
+	@Override
 	public List<Message> getbyType(String type) {
 
 		StringBuilder sql = new StringBuilder();
@@ -73,6 +98,59 @@ public class MessageMysqlDaoImpl extends AbstractShardingDao implements MessageM
 		try {
 			
 			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("type", type);
+			
+			List<Message> list = getJdbcTemplate(1).query(
+					sql.toString(), 
+					params,
+					new BeanPropertyRowMapper<Message>(Message.class));
+			
+			result.addAll(list);
+		} catch (EmptyResultDataAccessException e) {
+		}
+
+		return result;
+	}
+	
+	@Override
+	public List<Message> getSender(String sender, String type) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * from message")
+				.append(" WHERE sender = :sender and type = :type");
+
+		List<Message> result = new ArrayList<>();
+
+		try {
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("sender", sender);
+			params.addValue("type", type);
+			
+			List<Message> list = getJdbcTemplate(1).query(
+					sql.toString(), 
+					params,
+					new BeanPropertyRowMapper<Message>(Message.class));
+			
+			result.addAll(list);
+		} catch (EmptyResultDataAccessException e) {
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<Message> getReceiver(String receiver, String type) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * from message")
+				.append(" WHERE receiver = :receiver and type = :type");
+
+		List<Message> result = new ArrayList<>();
+
+		try {
+			
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("receiver", receiver);
 			params.addValue("type", type);
 			
 			List<Message> list = getJdbcTemplate(1).query(

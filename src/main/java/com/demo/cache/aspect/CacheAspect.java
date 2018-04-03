@@ -29,6 +29,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+
 import com.demo.base.service.AbstractCommonService;
 import com.demo.cache.anno.CacheEvict;
 import com.demo.cache.anno.CacheLoad;
@@ -42,8 +43,8 @@ import com.demo.utils.ClassUtil;
 import com.demo.utils.CollectionUtil;
 import com.demo.utils.NumberUtil;
 import com.demo.utils.StringUtil;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 @Aspect
 public class CacheAspect extends AbstractCommonService {

@@ -19,10 +19,8 @@
 	<context:property-placeholder
 		location="*.properties" />
 
-	<!-- threadService -->
-	
-	<bean
-		id="threadService"
+	<!-- threadService -->	
+	<bean id="threadService"
 		class="com.demo.utils.service.impl.ThreadServiceImpl">
 		<property
 			name="maxExecutorSize"
@@ -49,6 +47,7 @@
 			name="daemon"
 			value="${threadService.daemon}" />
 	</bean>
-	
-	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+
+	<bean id="restTemplate" 
+		class="org.springframework.web.client.RestTemplate" />
 </beans>

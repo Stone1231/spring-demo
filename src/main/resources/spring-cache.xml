@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:redisson="http://redisson.org/schema/redisson"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	  http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://redisson.org/schema/redisson http://redisson.org/schema/redisson/redisson.xsd
+       ">
+
+	<!-- serializer -->
+	<bean id="kryoCodec"
+		class="org.redisson.codec.KryoCodec" />
+	<bean id="jacksonCodec"
+		class="org.redisson.codec.JsonJacksonCodec" />
+
+	<!-- redisson cluster setting -->
+	<redisson:client id="redissonClusterClient"
+		codec-ref="kryoCodec">
+		<redisson:cluster-servers
+			idle-connection-timeout="600000"
+			ping-timeout="5000"
+			connect-timeout="5000"
+			timeout="5000"
+			retry-attempts="3"
+			retry-interval="1500"
+			reconnection-timeout="5000"
+			failed-attempts="3"
+			subscriptions-per-connection="5"
+			client-name="none"
+			subscription-connection-minimum-idle-size="2"
+			subscription-connection-pool-size="100"
+			slave-connection-minimum-idle-size="2"
+			slave-connection-pool-size="100"
+			master-connection-minimum-idle-size="2"
+			master-connection-pool-size="100"
+			read-mode="SLAVE"
+			scan-interval="2000">
+			<!-- password="${redisson.cluster.password}" -->
+			<redisson:node-address value="${redisson.cluster1}" />
+			<redisson:node-address value="${redisson.cluster2}" />
+		</redisson:cluster-servers>
+	</redisson:client>
+
+	<bean id="clusterCacheManager"
+		class="com.demo.cache.service.RedissonManager">
+		<constructor-arg name="redisson">
+			<ref bean="redissonClusterClient" />
+		</constructor-arg>
+		<constructor-arg
+			name="configLocation"
+			value="classpath:redisson.yaml" />
+		<constructor-arg name="codec">
+			<ref bean="kryoCodec" />
+		</constructor-arg>
+		<property name="clientName"
+			value="redissonClusterClient" />
+	</bean>
+	<bean id="checkRedissonConnectService"
+		class="com.demo.cache.service.impl.CheckRedissonConnectServiceImpl">
+		<property name="pingRedisInterval"
+			value="${checkRedisConnectService.pingRedisInterval}" />
+	</bean>
+
+<!--  
+	<bean id="cacheAspect"
+		class="com.demo.cache.aspect.CacheAspect" />
+		
+	<bean
+		id="checkRedisConnectService"
+		class="com.demo.cache.service.impl.CheckRedisConnectServiceImpl">
+		<property
+			name="pingRedisInterval"
+			value="${checkRedisConnectService.pingRedisInterval}" />
+	</bean>		
+-->	
+
+	<bean id="redissonCacheAspect"
+		class="com.demo.cache.aspect.RedissonCacheAspect" >
+		<property
+			name="redisMode"
+			value="${redis.mode}" />
+		<!--property
+			name="clusterCacheManagerName"
+			value="clusterCacheManager" /-->
+	</bean>
+
+<!-- 
+	<bean id="localCacheManagerFactory"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="ehcache.xml" />
+	</bean>
+
+	<bean id="localCacheManager" 
+		class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="localCacheManagerFactory" />
+	</bean>		
+ -->	
+ 
+<!--
+	<bean id="cacheAspect" class="com.demo.cache.aspect.CacheAspect" />	
+	<bean id="cacheManager" class="com.demo.cache.service.CustomCacheManager" />
+	<bean id="checkRedisConnectService"
+		class="com.demo.cache.service.impl.CheckRedisConnectServiceImpl">
+		<property name="pingRedisInterval"
+			value="${checkRedisConnectService.pingRedisInterval}" />
+	</bean>
+	<cache:annotation-driven cache-manager="cacheManager" />
+-->
+<!--  
+	<bean id="cacheAspect" 
+		class="com.demo.cache.aspect.RedissonCacheAspect">
+		<property name="redisMode" value="1" />
+	</bean>
+	<bean id="clusterCacheManager" 
+		class="com.demo.cache.service.RedissonManager">
+		<property name="clientName" value="redissonClusterClient" />
+	</bean>
+	<bean id="checkRedissonConnectService"
+		class="com.demo.cache.service.impl.CheckRedissonConnectServiceImpl">
+		<property name="pingRedisInterval"
+			value="${checkRedisConnectService.pingRedisInterval}" />
+	</bean>
+	<cache:annotation-driven cache-manager="clusterCacheManager" />
+-->
+
+</beans>

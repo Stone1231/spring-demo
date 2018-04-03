@@ -25,6 +25,7 @@ import com.demo.utils.CollectionUtil;
 //})
 @ImportResource({
 	"file:src/main/resources/spring-context.xml",
+	"file:src/main/resources/spring-cache.xml",
 	"file:src/main/resources/spring-data.xml",
 	"file:src/main/resources/spring-test.xml"})
 public class DemoApplication {

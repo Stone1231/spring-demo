@@ -1,8 +1,12 @@
 package com.demo.dao;
 
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import com.demo.base.BaseTest;
 import com.demo.dao.mysql.MessageMysqlDao;
 import com.demo.model.Message;
@@ -12,13 +16,17 @@ import com.demo.utils.StringUtil;
 
 public class MysqlTest extends BaseTest {
 	
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();	
 	
 	@Autowired
 	private MessageMysqlDao messageMysqlDao;
 	
+	@BenchmarkOptions(benchmarkRounds = 3, warmupRounds = 0, concurrency = 1)
 	@Test
 	public void testMysqlDao(){
-		String type = "mysql-dao";
+		//String type = "mysql-dao";
+		String type = "mysql";
 		
 		String msgId = StringUtil.randomString(10);
 		
@@ -35,9 +43,7 @@ public class MysqlTest extends BaseTest {
 		
 		message.setBody("body2");
 		messageMysqlDao.insert2(message);
-		
 	}
-	
 	
 //	@Autowired
 //	private DataSourceTransactionManager transactionManager;

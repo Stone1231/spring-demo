@@ -158,6 +158,17 @@
 			<constructor-arg ref="shardingDataSourceArrayFactoryBean" />
 		-->
 	</bean>
+	
+	<!-- for @Transactional annotation -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property
+			name="dataSource"
+			ref="shardingDataSourceTarget" />
+	</bean>
+	<tx:annotation-driven
+		proxy-target-class="true"
+		transaction-manager="transactionManager" />
 
 <!-- global -->
 <!--  
