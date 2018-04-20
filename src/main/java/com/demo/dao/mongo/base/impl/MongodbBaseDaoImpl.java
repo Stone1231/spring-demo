@@ -17,7 +17,6 @@ import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 import com.demo.dao.mongo.base.MongodbBaseDao;
 import com.demo.dao.mongo.base.MongodbCreateIndexListener;
-import com.demo.service.kafka.base.impl.KafkaBaseServiceImpl;
 import com.demo.utils.StringUtil;
 
 

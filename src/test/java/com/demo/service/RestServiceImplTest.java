@@ -15,11 +15,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import com.demo.DemoApplication;
+import com.demo.base.BaseTest;
 import com.demo.utils.DateUtil;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class RestServiceImplTest {
+
+public class RestServiceImplTest extends BaseTest {
 	
 	@Autowired
 	private RestService service;

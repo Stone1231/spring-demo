@@ -1,6 +1,8 @@
 package com.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.osgi.framework.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,7 @@ public class MessageServiceImpl implements MessageService {
 			key = "T(com.demo.cache.CacheNames).SENDER + ':'+ #message.sender + '_' + #message.type")
 	public List<Message> getSenderAndTypeCache(Message message){
 		LOGGER.info("into getSenderAndTypeCache");
-		return null;
+		return new ArrayList<>();
 	}
 
 	
@@ -86,7 +88,7 @@ public class MessageServiceImpl implements MessageService {
 			key = "T(com.demo.cache.CacheNames).RECEIVER + ':'+ #message.receiver + '_' + #message.type")
 	public List<Message> getReceiverAndTypeCache(Message message){
 		LOGGER.info("into getReceiverAndTypeCache");
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -100,11 +102,14 @@ public class MessageServiceImpl implements MessageService {
                        cacheNames = {com.demo.cache.CacheNames.RECEIVER },
                        key = "T(com.demo.cache.CacheNames).RECEIVER + ':'+ #message.receiver + '_' + #message.type")
             })
-	public void create(Message message) throws Exception {
+	public void create(Message message) {
 		messageMysqlDao.insert(message);
-		
-		message.setLogDate(DateUtil2.nowUTCTimestamp());
-		
+
+//test trans
+//		message.setLogDate(DateUtil2.nowUTCTimestamp());
+//		if(true){
+//			throw new ServiceException("rollback");
+//		}		
 		messageMysqlDao.update(message);
 	}
 }

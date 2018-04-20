@@ -17,5 +17,5 @@ public interface MessageService {
 
 	List<Message> getReceiverAndTypeCache(Message message);
 	
-	void create(Message message) throws Exception;
+	void create(Message message);
 }

@@ -125,7 +125,7 @@ public class CacheTest extends BaseTest {
 	}
 	
 	@Test
-	public void messageClusterCache(){
+	public void messageCache(){
 		
 		//先清除
 		Cache cache =  getClusterCache();
@@ -139,7 +139,7 @@ public class CacheTest extends BaseTest {
 	}
 	
 	@Test
-	public void messageClusterCache2(){
+	public void messageCache2(){
 		
 		//先清除
 		Cache cache =  getClusterCache();
@@ -157,7 +157,7 @@ public class CacheTest extends BaseTest {
 	}
 	
 	@Test
-	public void messageClusterCache3(){
+	public void cacheEvict(){
 		
 		//先清除
 		Cache cache =  getClusterCache();
@@ -165,17 +165,27 @@ public class CacheTest extends BaseTest {
 		
 		Message message = new Message();
 		message.setReceiver("receiver");
+		message.setSender("sender");
 		message.setType("mysql");
 		
-		List<Message> messages = messageService.getReceiverAndType(message);
-		System.out.println(StringUtil.writeJSON(messages));
+		List<Message> receivers = messageService.getReceiverAndType(message);
+		int bfCreateReceiverSize = receivers.size();
+		
+		receivers = messageService.getReceiverAndTypeCache(message);
+		int bfCreateReceiverCacheSize =  receivers.size();
+		
+		List<Message> senders = messageService.getSenderAndType(message);
+		int bfCreateSenderSize = senders.size();
+		
+		senders = messageService.getSenderAndTypeCache(message);
+		int bfCreateSenderCacheSize = senders.size();
 		
 		message.setId(NumberUtil.randomLong());
 		message.setMsgId(StringUtil.randomString(10));
 		message.setLogDate(1L);
 		message.setBody("new message!");
-		message.setReceiver("receiver");
-		message.setSender("sender");
+//		message.setReceiver("receiver");
+//		message.setSender("sender");
 		try {
 			messageService.create(message);
 		} catch (Exception e) {
@@ -183,8 +193,27 @@ public class CacheTest extends BaseTest {
 			e.printStackTrace();
 		}
 		
-		messages = messageService.getReceiverAndTypeCache(message);
-		System.out.println(StringUtil.writeJSON(messages));
+		receivers = messageService.getReceiverAndType(message);
+		int afCreateReceiverSize = receivers.size();
+		
+		receivers = messageService.getReceiverAndTypeCache(message);
+		int afCreateReceiverCacheSize = receivers.size();
+		
+		senders = messageService.getSenderAndType(message);
+		int afCreateSenderSize = senders.size();
+		
+		senders = messageService.getSenderAndTypeCache(message);
+		int afCreateSenderCacheSize = senders.size();
+		
+		System.out.println("before create - receivers size:" + bfCreateReceiverSize);
+		System.out.println("before create - receivers cache size:" + bfCreateReceiverCacheSize);	
+		System.out.println("after create - receivers size:" + afCreateReceiverSize);
+		System.out.println("after create - receivers cache size:" + afCreateReceiverCacheSize);
+		
+		System.out.println("before create - senders size:" + bfCreateSenderSize);
+		System.out.println("before create - senders cache size:" + bfCreateSenderCacheSize);	
+		System.out.println("after create - senders size:" + afCreateSenderSize);
+		System.out.println("after create - senders cache size:" + afCreateSenderCacheSize);
 	}
 	
 	@Test

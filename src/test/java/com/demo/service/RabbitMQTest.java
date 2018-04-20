@@ -10,14 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+import com.demo.base.BaseTest;
 import com.demo.service.rabbitmq.RabbitService;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class RabbitMQTest {
+
+public class RabbitMQTest extends BaseTest {
 	
-	@Rule
-	public BenchmarkRule benchmarkRule = new BenchmarkRule();
+//	@Rule
+//	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 	
 	@Autowired
 	private RabbitService service;
@@ -42,6 +42,7 @@ public class RabbitMQTest {
 		int i = 0;
 		while (i < 20000) {
 			service.send("queueName", "message");
+			i++;
 		}
 		
 		while (true) {

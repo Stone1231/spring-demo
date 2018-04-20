@@ -16,12 +16,11 @@ import com.demo.model.MqttRequest;
 import com.demo.service.mqtt.MqttPubService;
 import com.demo.utils.DateUtil;
 import com.demo.utils.JsonUtil;
+import com.demo.base.BaseTest;
 import com.demo.model.Message;
 
 //@Ignore
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class MqttTest {
+public class MqttTest extends BaseTest {
 
 	@Rule
 	public BenchmarkRule benchmarkRule = new BenchmarkRule();

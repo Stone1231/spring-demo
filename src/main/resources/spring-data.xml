@@ -160,15 +160,29 @@
 	</bean>
 	
 	<!-- for @Transactional annotation -->
+	<!--  
+	<bean
+		id="writeDataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref bean="shardingDataSourceTarget" />
+		</property>
+	</bean>	
+	<bean
+		id="writeJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="writeDataSource" />
+	</bean>	
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property
 			name="dataSource"
-			ref="shardingDataSourceTarget" />
+			ref="writeDataSource" />
 	</bean>
 	<tx:annotation-driven
 		proxy-target-class="true"
 		transaction-manager="transactionManager" />
+	-->
 
 <!-- global -->
 <!--  
