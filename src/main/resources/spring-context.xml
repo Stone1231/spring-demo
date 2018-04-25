@@ -16,6 +16,10 @@
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 -->
+	<!-- 啟用自動代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"
+		expose-proxy="true" />
+		
 	<context:property-placeholder
 		location="*.properties" />
 

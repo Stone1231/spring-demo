@@ -18,4 +18,6 @@ public interface MessageService {
 	List<Message> getReceiverAndTypeCache(Message message);
 	
 	void create(Message message);
+
+	List<Message> getReceiverAndTypeProxy(Message message);
 }

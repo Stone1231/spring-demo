@@ -15,6 +15,7 @@ import org.redisson.config.ReadMode;
 import org.redisson.config.SentinelServersConfig;
 import org.redisson.spring.cache.CacheConfig;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -237,6 +238,29 @@ public class CacheTest extends BaseTest {
 		
 		cache.clear();
 	}	
+	
+	@Test
+	public void proxy(){
+		//先清除
+		Cache cache =  getClusterCache();
+		cache.clear();
+		
+		Message message = new Message();
+		message.setReceiver("receiver");
+		message.setSender("sender");
+		message.setType("mysql");
+		
+		List<Message> receivers = messageService.getReceiverAndType(message);
+		int bfCreateReceiverSize = receivers.size();
+
+		receivers = messageService.getReceiverAndTypeProxy(message);
+		int afCreateReceiverSize = receivers.size();
+		
+		System.out.println("bf Size:" + bfCreateReceiverSize);
+		System.out.println("af Size:" + afCreateReceiverSize);
+		
+		cache.clear();
+	}
 	
 	private Cache getClusterCache(){
 		RedissonSpringCacheManager cacheManager = getClusterRedisson();

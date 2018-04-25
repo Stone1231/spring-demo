@@ -5,6 +5,7 @@ import java.util.List;
 import org.osgi.framework.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.demo.cache.anno2.Cacheable;
@@ -89,6 +90,12 @@ public class MessageServiceImpl implements MessageService {
 	public List<Message> getReceiverAndTypeCache(Message message){
 		LOGGER.info("into getReceiverAndTypeCache");
 		return new ArrayList<>();
+	}
+	
+	@Override
+	public List<Message> getReceiverAndTypeProxy(Message message){
+		LOGGER.info("into getReceiverAndTypeProxy");		
+		return ((MessageService)AopContext.currentProxy()).getReceiverAndType(message);
 	}
 
 	@Override
