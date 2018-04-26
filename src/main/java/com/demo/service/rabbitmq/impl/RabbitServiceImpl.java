@@ -8,8 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.demo.service.rabbitmq.MQProduceClient;
+import com.demo.service.rabbitmq.MQProduceClientFactory;
 import com.demo.service.rabbitmq.RabbitMQClient;
+import com.demo.service.rabbitmq.RabbitMQClientFactory;
 import com.demo.service.rabbitmq.RabbitService;
 import com.demo.utils.StringUtil;
 import com.demo.queue.AbstractListenQueue;
@@ -22,6 +26,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 
+@Service
 public class RabbitServiceImpl implements RabbitService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RabbitServiceImpl.class);
@@ -70,14 +75,14 @@ public class RabbitServiceImpl implements RabbitService {
     @Value("${rabbit.enable}")
     private boolean rabbitEnable;
     
+//    @Autowired
+//    private MQProduceClient mqProduceClient;
+    
     @Autowired
-    private MQProduceClient mqProduceClient;
-    @Autowired
+    private RabbitMQClientFactory rabbitMQClientFactory;
+    
     private RabbitMQClient rabbitMQClient;
-    
-    private Channel channel;
-    
-    
+
     @PostConstruct
     protected void init() throws RuntimeException {
         // 建立發送用佇列
@@ -187,6 +192,8 @@ public class RabbitServiceImpl implements RabbitService {
         	return result;
         }
         try {
+        	
+        	MQProduceClient mqProduceClient = rabbitMQClientFactory.createProduceClient();        	
         	mqProduceClient.sendMessage(queueName, message);
         	result = true;
         } catch (Exception ex) {
@@ -218,7 +225,8 @@ public class RabbitServiceImpl implements RabbitService {
              *  出現timeout，但是有設定basicQos可避免大量訊息併發
              *  (basicQos 控制從service拿取限定數量訊息，目前設定為:1)
              */
-            channel = rabbitMQClient.createChannel();
+        	rabbitMQClient = rabbitMQClientFactory.createClient();
+        	Channel channel = rabbitMQClient.createChannel();
             channel.queueDeclare(queueName, true, false, false, null);
             channel.exchangeDeclare(exchangeName, "topic", true);
             channel.queueBind(queueName, exchangeName, routingKey);
@@ -227,7 +235,7 @@ public class RabbitServiceImpl implements RabbitService {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                         throws IOException {
-                    channel.basicAck(envelope.getDeliveryTag(), false);
+                	channel.basicAck(envelope.getDeliveryTag(), false);
                     try {
                         String message = new String(body, "UTF-8");
                         if (StringUtil.isNullOrEmpty(message)) {
@@ -248,37 +256,5 @@ public class RabbitServiceImpl implements RabbitService {
     
     private void handleMessage(String message) {
     	LOGGER.info("received message {}", message);
-//    	if (StringUtils.isNullOrEmpty(message)) {
-//            return;
-//        }
-//    	SSOMessageBody messageBody = StringUtils.readJSON(message, SSOMessageBody.class);
-//    	if (messageBody == null || StringUtils.isNullOrEmpty(messageBody.getSsoId())) {
-//    		logger.error("received message is null");
-//    		return;
-//    	}
-//    	Trail trail = new Trail();
-//		trail.setDbId(messageBody.getDbId());
-//		trail.setTableId(messageBody.getTableId());
-//		long seq = globalSeqDao.nextFriendSeq();
-//		String ssoId = messageBody.getSsoId();
-//		if (messageBody.getAction().equals("/user/create")) {
-//			Account account = new Account();
-//			account.setSeq(seq);
-//			account.setSsoId(ssoId);
-//			account.setDisplayName(messageBody.getDisplayName());
-//			account.setPhotoUrl(messageBody.getPhotoUrl());
-//			account.setCreateTime(messageBody.getTime());
-//			account.setModifyTime(messageBody.getTime());
-//			accountDao.insertAccount(trail, account);
-//		} else if (messageBody.getAction().equals("/user/update")) {
-//			Account account = accountDao.getAccount(trail);
-//			account.setDisplayName(messageBody.getDisplayName());
-//			account.setPhotoUrl(messageBody.getPhotoUrl());
-//			account.setCreateTime(messageBody.getTime());
-//			account.setModifyTime(messageBody.getTime());
-//			accountDao.updateAccount(trail, account);
-//		} else {
-//			accountDao.deleteAccount(trail);
-//		}
     }
 }

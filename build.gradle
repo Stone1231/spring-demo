@@ -82,6 +82,10 @@ dependencies {
 		'org.apache.commons:commons-text:1.2',
 		//mqtt
 		'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0',
+		//rabbitmq
+		//'org.springframework.amqp:spring-rabbit:1.6.5.RELEASE',
+		//'com.rabbitmq:amqp-client:3.6.5',
+		
 		//commons-configuration
 		'commons-configuration:commons-configuration:1.10'
 	)

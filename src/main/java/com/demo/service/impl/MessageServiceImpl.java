@@ -112,6 +112,7 @@ public class MessageServiceImpl implements MessageService {
 	public void create(Message message) {
 		messageMysqlDao.insert(message);
 
+		// TODO trans 還沒實作成功
 //test trans
 //		message.setLogDate(DateUtil2.nowUTCTimestamp());
 //		if(true){

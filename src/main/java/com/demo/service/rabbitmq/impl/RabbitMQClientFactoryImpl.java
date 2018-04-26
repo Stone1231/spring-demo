@@ -9,10 +9,11 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.demo.service.rabbitmq.MQProduceClient;
-import com.demo.service.rabbitmq.MQProduceClientFactory;
 import com.demo.service.rabbitmq.RabbitMQClient;
+import com.demo.service.rabbitmq.RabbitMQClientFactory;
 import com.demo.utils.StringUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -20,7 +21,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
 
 
-public class RabbitMQClientFactoryImpl implements MQProduceClientFactory<RabbitMQClient> {
+@Service
+public class RabbitMQClientFactoryImpl implements RabbitMQClientFactory {
 	
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQClientFactoryImpl.class);
         

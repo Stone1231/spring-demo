@@ -108,14 +108,13 @@ public class MqttSubServiceImpl implements MqttSubService {
 			try {
 				LOGGER.info(message);
 				messageMongoDao.save(msg);
-				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;
-		default://group
-
+		default://other
+			LOGGER.info(message);
 			break;
 		}
 		

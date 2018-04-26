@@ -3,9 +3,12 @@ package com.demo.service.rabbitmq.impl;
 import java.io.Closeable;
 import java.io.IOException;
 
+import org.springframework.stereotype.Service;
+
 import com.demo.service.rabbitmq.RabbitMQClient;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+
 
 public class RabbitMQClientImpl implements RabbitMQClient, Closeable {
 
