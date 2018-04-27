@@ -10,7 +10,7 @@ public interface MessageService {
 	List<Message> getTypeCache(String type);
 
 	List<Message> getSenderAndType(Message message);
-	
+
 	List<Message> getSenderAndTypeCache(Message message);
 
 	List<Message> getReceiverAndType(Message message);
@@ -20,4 +20,6 @@ public interface MessageService {
 	void create(Message message);
 
 	List<Message> getReceiverAndTypeProxy(Message message);
+
+	Message convertMsg(Message messsage) throws Exception;
 }

@@ -32,8 +32,13 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-cache')
 	compile('org.springframework.boot:spring-boot-starter-data-redis')
 	testCompile(
+		// mock for unit test
+		'org.mockito:mockito-all:1.10.19',
+		'org.powermock:powermock-module-junit4:1.7.3',
+		'org.powermock:powermock-api-mockito:1.7.3',
+	
 		"com.carrotsearch:junit-benchmarks:0.7.2",
-		'org.springframework.boot:spring-boot-starter-test'
+		'org.springframework.boot:spring-boot-starter-test'		
 	)
 	
 	
