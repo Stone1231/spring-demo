@@ -6,7 +6,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
-import javax.activation.MimetypesFileTypeMap;
+//import javax.activation.MimetypesFileTypeMap;
 
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -59,15 +59,15 @@ public class FileUtilTest {
 		System.out.println(result);
 	}
 
-	@Test
-	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
-	public void getMimeType() {
-		String filepath = "custom/input/docx/Resume.doc";
-		File f = new File(filepath);
-		String mimetype = new MimetypesFileTypeMap().getContentType(f);
-		String type = mimetype.split("/")[0];
-		// System.out.println(mimetype + ", " + type);
-	}
+//	@Test
+//	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+//	public void getMimeType() {
+//		String filepath = "custom/input/docx/Resume.doc";
+//		File f = new File(filepath);
+//		String mimetype = new MimetypesFileTypeMap().getContentType(f);
+//		String type = mimetype.split("/")[0];
+//		// System.out.println(mimetype + ", " + type);
+//	}
 
 	@Test
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
